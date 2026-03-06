@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Psychology Self-Reflection Assessments</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -16,16 +16,13 @@
 --muted:#64748b;
 --border:#e2e8f0;
 --primary:#111827;
---primary-2:#334155;
---blue:#dbeafe;
+--primary2:#334155;
 --green:#dcfce7;
+--blue:#dbeafe;
 --orange:#fed7aa;
 --red:#fecaca;
---shadow:0 10px 30px rgba(15,23,42,.08);
 --radius:18px;
 }
-
-*{box-sizing:border-box}
 
 body{
 margin:0;
@@ -34,26 +31,21 @@ background:linear-gradient(180deg,#f8fafc,#f1f5f9);
 color:var(--text)
 }
 
-.wrap{max-width:980px;margin:0 auto;padding:24px}
+.wrap{max-width:980px;margin:auto;padding:24px}
 
 .card{
 background:var(--card);
-border:1px solid rgba(226,232,240,.9);
+border:1px solid var(--border);
 border-radius:var(--radius);
-box-shadow:var(--shadow);
 padding:22px;
 margin-bottom:18px
 }
 
-.hero{padding:28px}
-
 h1,h2,h3{margin-top:0}
-
-.muted{color:var(--muted);line-height:1.6}
 
 .cards{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
 gap:14px
 }
 
@@ -64,22 +56,18 @@ padding:16px;
 background:#fff
 }
 
-.test-card h3{margin-bottom:6px}
-
 .btn{
 padding:12px 18px;
 border-radius:14px;
 border:1px solid var(--border);
 background:#fff;
-font-size:14px;
 font-weight:700;
 cursor:pointer
 }
 
 .btn.primary{
 background:var(--primary);
-color:#fff;
-border-color:var(--primary)
+color:#fff
 }
 
 .btn-row{
@@ -90,13 +78,33 @@ justify-content:center;
 margin-top:22px
 }
 
+.progress-label{
+display:flex;
+justify-content:space-between;
+font-size:13px;
+color:var(--muted);
+margin:10px 0 8px
+}
+
+.progress{
+height:12px;
+background:#e5e7eb;
+border-radius:999px;
+overflow:hidden
+}
+
+.progress div{
+height:100%;
+background:linear-gradient(90deg,var(--primary),var(--primary2))
+}
+
 .question-shell{text-align:center;padding:28px}
 
 .question-text{
 font-size:26px;
 line-height:1.4;
 max-width:760px;
-margin:0 auto 22px;
+margin:auto;
 font-weight:700
 }
 
@@ -104,68 +112,42 @@ font-weight:700
 display:grid;
 grid-template-columns:repeat(6,minmax(70px,1fr));
 gap:10px;
-margin-top:10px
+margin-top:16px
 }
 
 .score-btn{
 border:1px solid var(--border);
-background:#fff;
-border-radius:16px;
-padding:14px 10px;
+border-radius:14px;
+padding:12px;
 cursor:pointer;
 font-weight:700
 }
 
-.score-btn:hover{
-transform:translateY(-1px);
-border-color:#94a3b8
-}
-
 .score-btn .n{
-display:block;
-font-size:22px;
-margin-bottom:5px
+font-size:20px;
+display:block
 }
 
 .score-btn .t{
-display:block;
 font-size:12px;
-color:var(--muted);
-font-weight:600
+color:var(--muted)
 }
 
 .score-btn.active{
 background:var(--primary);
-color:#fff
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(2,minmax(0,1fr));
-gap:14px
+color:white
 }
 
 .chart-wrap{
-background:#fff;
 border:1px solid var(--border);
 border-radius:14px;
-padding:18px;
-min-height:380px
+padding:18px
 }
 
-.low{background:var(--green);color:#166534}
-.mild{background:var(--blue);color:#1d4ed8}
-.moderate{background:var(--orange);color:#c2410c}
-.high{background:var(--red);color:#b91c1c}
-
-.pill{
-display:inline-block;
-padding:7px 11px;
-border-radius:999px;
-font-size:12px;
-font-weight:800;
-margin:8px 0 14px
-}
+.low{background:var(--green);padding:6px 10px;border-radius:999px}
+.mild{background:var(--blue);padding:6px 10px;border-radius:999px}
+.moderate{background:var(--orange);padding:6px 10px;border-radius:999px}
+.high{background:var(--red);padding:6px 10px;border-radius:999px}
 
 </style>
 </head>
@@ -183,98 +165,151 @@ const SCALE=[
 {value:3,text:'Often'},
 {value:4,text:'Very often'},
 {value:5,text:'Almost always'}
-];
+]
 
 const tests={
 
-narcissism:{name:'Narcissism Assessment',intro:'Explores admiration, entitlement, status and empathy patterns.',thresholds:[150,300,450],sectionMax:50,sections:[
-{title:'Admiration',questions:['I enjoy praise for achievements','Recognition motivates me','I enjoy public admiration','I like attention for success','I enjoy compliments','Praise energizes me']},
-{title:'Superiority',questions:['My ideas are often better','I feel intellectually strong','I often outperform peers','I feel highly capable','I believe in exceptional success','I feel highly competent']}
-]},
-
-bpd:{name:'Borderline Personality Assessment',intro:'Explores emotional intensity and relationship patterns.',thresholds:[60,120,180],sectionMax:30,sections:[
-{title:'Fear of Abandonment',questions:['I fear people leaving','Rejection hurts deeply','Distance causes anxiety','I fear losing relationships','I feel panic about abandonment','Loneliness feels unsafe']},
-{title:'Emotional Instability',questions:['My mood changes quickly','I feel emotional extremes','Small events trigger strong emotions','My moods shift rapidly','I feel emotionally overwhelmed','My emotions fluctuate strongly']}
-]},
-
-adhd:{name:'ADHD Assessment',intro:'Focus, impulsivity and organization patterns.',thresholds:[60,120,180],sectionMax:30,sections:[
-{title:'Focus',questions:['I struggle to focus','My mind drifts','I start tasks without finishing','I lose concentration easily','I make careless mistakes','Reading long text is hard']},
-{title:'Impulsivity',questions:['I interrupt others','I act before thinking','I make quick decisions','I struggle waiting my turn','I regret impulsive actions','I speak without thinking']}
-]},
-
-bipolar:{name:'Bipolar Mood Patterns',intro:'Explores mood elevation and depression cycles.',thresholds:[60,120,180],sectionMax:30,sections:[
-{title:'Elevated Mood',questions:['I feel unusually energetic','My confidence spikes','Ideas race quickly','Sleep decreases','I feel unstoppable','My productivity increases']},
-{title:'Depression',questions:['I feel deep sadness','Motivation disappears','Energy drops','I feel hopeless','Tasks feel difficult','I lose interest']}
-]},
-
-codependency:{
-name:'Codependency Assessment',
-intro:'Explores people-pleasing, boundaries, rescuing behavior and emotional dependence.',
-thresholds:[60,120,180],
-sectionMax:30,
+narcissism:{
+name:'Narcissistic Traits',
+thresholds:[150,300,450],
 sections:[
-{title:'Self Worth',questions:[
-'I feel responsible for other people’s emotions.',
-'My self-esteem depends on others.',
-'I rely on validation.',
-'I lose identity in relationships.',
-'I feel valuable when needed.',
-'I struggle being alone.'
+{title:'Admiration',questions:[
+'I enjoy receiving praise for achievements',
+'I appreciate admiration from others',
+'I enjoy recognition for success',
+'I like attention for accomplishments',
+'I enjoy compliments',
+'I feel energized by praise'
 ]},
-{title:'People Pleasing',questions:[
-'I prioritize others over myself.',
-'I dislike disappointing people.',
-'I say yes when I mean no.',
-'I try to keep everyone happy.',
-'I fear disagreement.',
-'I maintain relationship harmony.'
-]},
-{title:'Boundaries',questions:[
-'I feel guilty setting boundaries.',
-'I struggle to say no.',
-'I allow limits to be crossed.',
-'I tolerate uncomfortable behavior.',
-'I fear people leaving.',
-'I avoid conflict.'
-]},
-{title:'Emotional Dependence',questions:[
-'My mood depends on others.',
-'I feel anxious when others are upset.',
-'I fear losing relationships.',
-'I seek reassurance.',
-'I feel empty when single.',
-'I feel incomplete without support.'
+{title:'Superiority',questions:[
+'I believe my ideas are better than most',
+'I feel intellectually confident',
+'I often outperform peers',
+'I believe I have exceptional potential',
+'I feel highly capable',
+'I feel confident about success'
 ]}
 ]
+},
+
+bpd:{
+name:'Borderline Personality',
+thresholds:[60,120,180],
+sections:[
+{title:'Abandonment Fear',questions:[
+'I fear people leaving me',
+'I feel anxious when relationships feel distant',
+'I worry about rejection',
+'I feel panic about abandonment',
+'I worry about losing people',
+'I fear being left alone'
+]},
+{title:'Emotional Intensity',questions:[
+'My mood shifts quickly',
+'I feel intense emotions',
+'Small events trigger strong reactions',
+'I feel emotionally overwhelmed',
+'I experience emotional extremes',
+'I struggle regulating feelings'
+]}
+]
+},
+
+adhd:{
+name:'ADHD',
+thresholds:[60,120,180],
+sections:[
+{title:'Attention',questions:[
+'I struggle focusing on tasks',
+'My mind drifts during conversations',
+'I start tasks without finishing',
+'I lose concentration easily',
+'I make careless mistakes',
+'I struggle focusing while reading'
+]},
+{title:'Impulsivity',questions:[
+'I interrupt others',
+'I act before thinking',
+'I make quick decisions',
+'I struggle waiting my turn',
+'I regret impulsive actions',
+'I speak without thinking'
+]}
+]
+},
+
+bipolar:{
+name:'Bipolar Mood Patterns',
+thresholds:[60,120,180],
+sections:[
+{title:'Elevated Mood',questions:[
+'I feel unusually energetic',
+'I feel extremely confident',
+'I have racing thoughts',
+'I need less sleep',
+'I feel unusually productive',
+'I feel unstoppable'
+]},
+{title:'Depressive Mood',questions:[
+'I experience deep sadness',
+'I lose motivation',
+'I feel emotionally drained',
+'I feel hopeless',
+'I struggle with daily tasks',
+'I lose interest in activities'
+]}
+]
+},
+
+codependency:{
+name:'Codependency',
+thresholds:[60,120,180],
+sections:[
+{title:'Self Worth',questions:[
+'I feel responsible for others emotions',
+'My self esteem depends on others',
+'I rely on validation',
+'I lose myself in relationships',
+'I feel valuable when needed',
+'I struggle feeling secure alone'
+]},
+{title:'People Pleasing',questions:[
+'I prioritize others over myself',
+'I struggle disappointing people',
+'I say yes when I want to say no',
+'I try to keep everyone happy',
+'I fear conflict',
+'I sacrifice needs for relationships'
+]}
+]
+}
 
 }
 
-};
-
-let currentTest=null;
-let flatQuestions=[];
-let answers=[];
-let currentIndex=0;
-let radarChart=null;
+let currentTest=null
+let flatQuestions=[]
+let answers=[]
+let currentIndex=0
+let radarChart=null
 
 function renderHome(){
 
 document.getElementById("app").innerHTML=`
+
 <div class="wrap">
 
-<div class="card hero">
+<div class="card">
 <h1>Psychology Self-Reflection Assessments</h1>
-<p class="muted">Choose an assessment to begin.</p>
+<p>Select a test below.</p>
 </div>
 
 <div class="cards">
 
-${Object.keys(tests).map(key=>`
+${Object.keys(tests).map(k=>`
 <div class="test-card">
-<h3>${tests[key].name}</h3>
-<p class="muted">${tests[key].intro}</p>
+<h3>${tests[k].name}</h3>
 <div class="btn-row">
-<button class="btn primary" onclick="startTest('${key}')">Start</button>
+<button class="btn primary" onclick="startTest('${k}')">Start</button>
 </div>
 </div>
 `).join("")}
@@ -282,119 +317,155 @@ ${Object.keys(tests).map(key=>`
 </div>
 
 </div>
-`;
+`
+
 }
 
 function startTest(name){
 
-currentTest=name;
+currentTest=name
+flatQuestions=[]
 
-flatQuestions=[];
+tests[name].sections.forEach((s,i)=>{
+s.questions.forEach(q=>{
+flatQuestions.push({text:q,section:i})
+})
+})
 
-tests[name].sections.forEach(section=>{
-section.questions.forEach(q=>{
-flatQuestions.push(q);
-});
-});
+answers=Array(flatQuestions.length).fill(null)
+currentIndex=0
 
-answers=Array(flatQuestions.length).fill(null);
-
-currentIndex=0;
-
-renderQuiz();
+renderQuiz()
 
 }
 
 function renderQuiz(){
 
-const q=flatQuestions[currentIndex];
+const q=flatQuestions[currentIndex]
+
+const answered=answers.filter(v=>v!==null).length
+const progress=Math.round((answered/flatQuestions.length)*100)
 
 document.getElementById("app").innerHTML=`
 
 <div class="wrap">
 
+<div class="card">
+
+<h2>${tests[currentTest].name}</h2>
+
+<div class="progress-label">
+<span>Progress</span>
+<span>${progress}%</span>
+</div>
+
+<div class="progress">
+<div style="width:${progress}%"></div>
+</div>
+
+</div>
+
 <div class="card question-shell">
 
-<h1>${tests[currentTest].name}</h1>
-
-<div class="question-text">${q}</div>
+<div class="question-text">${q.text}</div>
 
 <div class="scale">
 
-${SCALE.map(item=>`
-<button class="score-btn ${answers[currentIndex]===item.value?'active':''}" data-score="${item.value}">
-<span class="n">${item.value}</span>
-<span class="t">${item.text}</span>
+${SCALE.map(s=>`
+<button class="score-btn ${answers[currentIndex]===s.value?'active':''}" data-score="${s.value}">
+<span class="n">${s.value}</span>
+<span class="t">${s.text}</span>
 </button>
 `).join("")}
 
 </div>
 
 <div class="btn-row">
-
 <button class="btn" onclick="prev()">Previous</button>
-<button class="btn primary" onclick="next()">Next</button>
-
+<button class="btn primary" onclick="next()">${currentIndex===flatQuestions.length-1?'Results':'Next'}</button>
 </div>
 
 </div>
 
 </div>
-`;
+`
 
 document.querySelectorAll("[data-score]").forEach(btn=>{
 btn.onclick=function(){
-answers[currentIndex]=Number(this.dataset.score);
-renderQuiz();
-};
-});
+answers[currentIndex]=Number(this.dataset.score)
+renderQuiz()
+}
+})
 
 }
 
 function prev(){
-if(currentIndex>0){
-currentIndex--;
-renderQuiz();
-}
+if(currentIndex>0){currentIndex--;renderQuiz()}
 }
 
 function next(){
 if(currentIndex<flatQuestions.length-1){
-currentIndex++;
-renderQuiz();
+currentIndex++
+renderQuiz()
 }else{
-renderResults();
+renderResults()
 }
 }
 
 function renderResults(){
 
-const score=answers.reduce((a,b)=>a+(b||0),0);
+const score=answers.reduce((a,b)=>a+(b||0),0)
+
+const labels=tests[currentTest].sections.map(s=>s.title)
+
+const data=tests[currentTest].sections.map((s,i)=>{
+let start=i*6
+return answers.slice(start,start+6).reduce((a,b)=>a+(b||0),0)
+})
 
 document.getElementById("app").innerHTML=`
 
 <div class="wrap">
 
-<div class="card hero">
-
+<div class="card">
 <h1>Your Score</h1>
-
 <h2>${score}</h2>
 
-<p class="muted">This result is for self-reflection only.</p>
+<div class="chart-wrap">
+<canvas id="radarChart"></canvas>
+</div>
 
 <div class="btn-row">
 <button class="btn" onclick="renderHome()">Home</button>
+<button class="btn primary" onclick="startTest('${currentTest}')">Restart</button>
 </div>
 
 </div>
 
 </div>
-`;
+`
+
+const ctx=document.getElementById("radarChart")
+
+if(radarChart) radarChart.destroy()
+
+radarChart=new Chart(ctx,{
+type:'radar',
+data:{
+labels:labels,
+datasets:[{
+label:'Score',
+data:data,
+backgroundColor:'rgba(59,130,246,0.2)',
+borderColor:'rgba(30,64,175,1)'
+}]
+},
+options:{responsive:true,plugins:{legend:{display:false}}}
+})
 
 }
 
-renderHome();
+renderHome()
 
 </script>
 
